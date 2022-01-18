@@ -43,6 +43,19 @@ export const AuthProvider = () => {
         return axios.patch(url, body, init)      
     };
 
+    const authGet = async (url, init) => {
+        
+        init = init || {};
+        const token = await tokenProvider.getToken();
+    
+        init.headers = {
+            ...init.headers,
+            Authorization: `Token ${token}`,
+        };
+        
+        return axios.get(url, init)      
+    };
+
     const useAuth = () => {
         const [isLogged, setIsLogged] = useState(tokenProvider.isLoggedIn());
     
@@ -64,6 +77,7 @@ export const AuthProvider = () => {
         useAuth,
         authPost,
         authPatch,
+        authGet,
         login,
         logout
     };
