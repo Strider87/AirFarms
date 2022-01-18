@@ -8,6 +8,7 @@ import Home from '../pages/Home'
 import RouteWrapper from './RouteWrapper';
 import UserDashboard from '../pages/UserDashboard';
 import UserProfilePage from '../pages/UserProfilePage'
+import CreateFarm from '../pages/CreateFarm'
 
 function Routes() {
     return (
@@ -19,6 +20,7 @@ function Routes() {
             <RouteWrapper path="/logout" exact isPrivate component={Signout} />
             <RouteWrapper path="/resetpassword" exact component={ResetPassword} />
             <RouteWrapper path="/user-dashboard" exact isPrivate component={UserDashboard} />
+            <RouteWrapper path="/create-farm" exact isPrivate component={CreateFarm} />
             <RouteWrapper component={Signin}/>
         </Switch>
         
