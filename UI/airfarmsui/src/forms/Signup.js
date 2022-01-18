@@ -34,7 +34,7 @@ function Signup() {
             email: values.email,
             about: values.about,
             location: values.location,
-            birth_date: "1986-10-08",//this.state.birth_date,
+            birth_date: values.birthDate,
             password: values.password
           };
 
@@ -79,7 +79,8 @@ function Signup() {
             .required('Required'),
         confirmPassword: Yup.string()
             .oneOf([Yup.ref('password'), ''], 'Passwords must match')
-            .required('Required')
+            .required('Required'),
+        birthDate: Yup.date().required('Required')
     })
 
     return (
@@ -142,6 +143,14 @@ function Signup() {
                     type='text'
                     label='Name'
                     name='name'
+                    required
+                    color="orange.400"
+                />
+                <FormikControl
+                    control='chakraDatePicker'
+                    type='text'
+                    label='Birth Date'
+                    name='birthDate'
                     required
                     color="orange.400"
                 />
