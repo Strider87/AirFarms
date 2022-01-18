@@ -4,7 +4,7 @@ import React from 'react'
 //import Select from './Select'
 //import RadioButtons from './RadioButtons'
 //import CheckboxGroup from './CheckboxGroup'
-//import DatePicker from './DatePicker'
+import ChakraDatePicker from './ChakraDatePicker'
 import ChakraInput from './ChakraInput'
 import ChakraTextArea from './ChakraTextArea'
 import WysiwygEditor from './WysiwygEditor'
@@ -18,6 +18,8 @@ function FormikControl (props) {
         return <ChakraTextArea {...rest} />
     case 'wysiwygEditor':
         return <WysiwygEditor {...rest} />
+    case 'chakraDatePicker':
+        return <ChakraDatePicker {...rest} />
     default:
       return null
   }

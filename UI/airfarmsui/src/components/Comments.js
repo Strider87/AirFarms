@@ -11,10 +11,10 @@ import {
     Box
 } from '@chakra-ui/react'
 
-function Posts(props) {
+function Comments(props) {
     const locale = 'en';
     const user = useSelector(state => state.getUser)
-    const date = new Date(props.postBody.date_posted)
+    const date = new Date(props.postBody.comment_date)
     //const [dateString, timeString, wish] = useDate(date)
     const day = date.toLocaleDateString(locale, { weekday: 'long' });
     const dateString = `${day}, ${date.getDate()} ${date.toLocaleDateString(locale, { month: 'long' })}\n\n`;
@@ -41,7 +41,7 @@ function Posts(props) {
                     <Divider orientation="vertical" />
                     <Box>
                         <VStack>
-                            <Text>{parse(props.postBody.description)}</Text> 
+                            <Text>{parse(props.postBody.comment)}</Text> 
                             <br/> 
                         </VStack>
                         {dateString === null ? <Text ml="2" fontSize="xs">Just now</Text> : <Text ml="2" fontSize="xs">{dateString}, {time}</Text>}
@@ -52,4 +52,4 @@ function Posts(props) {
     )
 }
 
-export default Posts
+export default Comments

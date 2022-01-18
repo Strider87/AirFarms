@@ -7,6 +7,10 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css"
 import {AuthProvider} from '../utils/AuthProvider'
 import { useDispatch } from 'react-redux';
 import { commentImageAction } from '../storeActions';
+import { AttachmentIcon } from "@chakra-ui/icons"
+import { Button, chakra } from "@chakra-ui/react"
+import ColourPicker from "./ColourPicker"
+
 
 const CustomFormikRichText: React.FC<{ name: string }> = (props) => {
     const [field, , helpers] = useField<EditorState>(props.name)
@@ -24,7 +28,7 @@ const CustomFormikRichText: React.FC<{ name: string }> = (props) => {
                 }
             }
             const authProvider = AuthProvider()
-            await authProvider.authPost(`http://127.0.0.1:8000/activity/comments/picture/handle/`, data, config, false)
+            await authProvider.authPost(`http://127.0.0.1:8000/activity/picture/comments/handle/`, data, config, false)
             .then(res =>{
                 console.log(res);
                 console.log(res.data);
@@ -43,17 +47,6 @@ const CustomFormikRichText: React.FC<{ name: string }> = (props) => {
                 console.log(error.data);
                 reject(error);
             })
-            //const localSrc = URL.createObjectURL(file)
-            
-            //xhr.send(data);
-            /*xhr.addEventListener('load', () => {
-              const response = JSON.parse(xhr.responseText);
-              resolve(response);
-            });
-            xhr.addEventListener('error', () => {
-              const error = JSON.parse(xhr.responseText);
-              reject(error);
-            });*/
           }
         );
       }
@@ -72,6 +65,7 @@ const CustomFormikRichText: React.FC<{ name: string }> = (props) => {
             color: 'gray',
         },
         fontFamily: {
+            inDropdown: true,
             options: ['Arial', 'Georgia', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana'],
           },
         list: {
@@ -80,6 +74,7 @@ const CustomFormikRichText: React.FC<{ name: string }> = (props) => {
         textAlign: {
             inDropdown: true,
           },
+         // colorPicker: { component: ColourPicker },
         colorPicker: {
             colors: ['rgb(97,189,109)', 'rgb(26,188,156)', 'rgb(84,172,210)', 'rgb(44,130,201)',
               'rgb(147,101,184)', 'rgb(71,85,119)', 'rgb(204,204,204)', 'rgb(65,168,95)', 'rgb(0,168,133)',
@@ -90,7 +85,8 @@ const CustomFormikRichText: React.FC<{ name: string }> = (props) => {
           },
         image: {
             uploadCallback: uploadImageCallBack,
-            alt: { present: true, mandatory: true },
+            previewImage: true,
+            alt: { present: false, mandatory: false },
           },
         history: {
             inDropdown: true,
@@ -102,6 +98,7 @@ const CustomFormikRichText: React.FC<{ name: string }> = (props) => {
 
     return (
         <Editor
+            spellCheck
             toolbar={EditorToolbar}
             wrapperStyle={{
                 border: "1px solid #d6d6d6",
@@ -109,12 +106,13 @@ const CustomFormikRichText: React.FC<{ name: string }> = (props) => {
                 borderRadius: 10
             }}
             toolbarStyle={{
-                border: 0,
+                border: 1,
                 borderBottom: "1px solid #d6d6d6",
                 background: "transparent",
                 borderRadius: 10,
                 fontSize: "15px",
-                color: "blue"
+                color: "black",
+                padding: 5,
             }}
             editorState={field.value}
             onEditorStateChange={(value) => helpers.setValue(value)}
