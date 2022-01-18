@@ -4,14 +4,52 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from farms.models import Farm
+from mapfarm.serializers import FarmMapSerializer
 from .models import FarmMap
 from .forms import NewFarmShape
+from rest_framework import generics, permissions, viewsets
 import json
 from django.contrib.gis.geos import GEOSGeometry
 # import the logging library
 import logging
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
+
+
+class FarmMapViewSet(viewsets.ModelViewSet):
+    permission_classes = [
+        permissions.IsAuthenticated,
+    ]
+    #parser_classes = (MultiPartParser, FormParser)
+    queryset = FarmMap.objects.all()
+    serializer_class = FarmMapSerializer
+    #lookup_field = 'farm_id'
+
+    def retrieve(self, request, *args, **kwargs):
+        farm_id = kwargs.get('farm', None)
+        farm_obj = Farm.objects.get(id=farm_id)
+        self.queryset = FarmMap.objects.filter(farm=farm_obj).distinct()
+        return super(FarmMapViewSet, self).retrieve(request, *args, **kwargs)
+
+    def perform_create(self, serializer):
+        #farm_obj = Farm.objects.get(id=self.request.data.farm)
+        farm_obj = serializer.validated_data.get('farm')
+        #data = self.request.data.body.decode('utf-8')
+        body = self.request.data.get('body')
+        #data = body.decode('utf-8')
+        jsonData = json.loads(body)
+        farmBoundaryData=None
+        for feature in jsonData['features']:
+            try:
+				#Save Polygon Geometry to DB
+                farmBoundaryData = GEOSGeometry(str(feature['geometry']))
+            except (TypeError, ValueError) as exc:
+				# If the geometry_str is not a valid WKT, EWKT or HEXEWKB string
+				# or is None then either continue, break or do something else.
+                print(exc)
+                break
+            break
+        serializer.save(farm=farm_obj, farmBoundary=farmBoundaryData)
 
 '''
 Basic view for displaying a map
