@@ -11,3 +11,10 @@ export const  commentImageAction = (payload) => {
         payload: payload
     }
 }
+
+export const  userLocationAction = (payload) => {
+    return {
+        type: 'LOCATION',
+        payload: payload
+    }
+}
