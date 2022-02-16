@@ -3,16 +3,54 @@ from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.urls import reverse
 from django.contrib import messages
 from django.core.paginator import Paginator
+from rest_framework import viewsets, permissions
 from accounts.models import User
+from farms.serializers import FarmDiscussionBoardSerializer, FarmPictureSerializer, FarmSerializer
 from .forms import NewFarm, NewSubscription
 from django.views.generic import ListView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from .models import Farm, Subscription, FarmFollowers
-from dashboard.models import Like
+from .models import Farm, FarmDiscussionBoard, FarmPicture, Subscription, FarmFollowers
+from dashboard.models import Like, Post
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from mapfarm import views
 import json
+
+class FarmViewSet(viewsets.ModelViewSet):
+    permission_classes = [
+        permissions.IsAuthenticated,
+    ]
+    #parser_classes = (MultiPartParser, FormParser)
+    #queryset = Farm.objects.all()
+    serializer_class = FarmSerializer
+
+    def get_queryset(self):
+        return Farm.objects.filter(user_id=self.request.user.id)
+
+
+class FarmPictureViewSet(viewsets.ModelViewSet):
+    permission_classes = [
+        permissions.IsAuthenticated,
+    ]
+    #parser_classes = (MultiPartParser, FormParser)
+    queryset = FarmPicture.objects.all()
+    serializer_class = FarmPictureSerializer
+    lookup_field = 'farm_id'
+
+    def retrieve(self, request, *args, **kwargs):
+        farm_id = kwargs.get('farm_id', None)
+        farm_obj = Farm.objects.get(id=farm_id)
+        self.queryset = FarmPicture.objects.filter(farm=farm_obj).distinct()
+        return super(FarmPictureViewSet, self).retrieve(request, *args, **kwargs)
+
+class FarmDiscussionBoardViewSet(viewsets.ModelViewSet):
+    permission_classes = [
+        permissions.IsAuthenticated,
+    ]
+    #parser_classes = (MultiPartParser, FormParser)
+    queryset = FarmDiscussionBoard.objects.all()
+    serializer_class = FarmDiscussionBoardSerializer
+    lookup_field = 'farm'
 
 class FarmListView(ListView):
 	model = Farm

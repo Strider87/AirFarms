@@ -11,7 +11,7 @@ class NewFarm(forms.ModelForm):
             farm = super(NewFarm, self).save(commit=False)
             farm.name = self.cleaned_data['name']
             farm.description = self.cleaned_data['description']
-            farm.user = request.user
+            farm.user = self.request.user
 
             if commit:
                 farm.save()

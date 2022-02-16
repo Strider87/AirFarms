@@ -1,5 +1,5 @@
 from django.db.models.signals import post_save
-from .models import Farm, Subscription, SubscriptionPicture, FarmPicture
+from .models import Farm, FarmProfilePicture, Subscription, SubscriptionPicture, FarmPicture
 from django.dispatch import receiver
 
 @receiver(post_save, sender=Farm)

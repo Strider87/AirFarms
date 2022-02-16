@@ -6,28 +6,27 @@ from django.db import models
 from django.utils import timezone
 from django.core.validators import MaxValueValidator, MinValueValidator
 
+from dashboard.models import DiscussionBoard
+
 # Create your models here.
 
 class Farm(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(null=True,blank=True)
     date_created = models.DateTimeField(default=timezone.now)
-    user = models.ForeignKey(
-                            User,
-                            null=False,
-                            blank=False,
-                            related_name="user",
-                            on_delete=models.CASCADE
-                            )
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __unicode__(self):
-    	return self.name
-
-    def __str__(self):
         return self.name
 
-    def get_absolute_url(self):
-        return reverse('farm-detail', kwargs={'pk': self.pk})
+    # def __str__(self):
+    #     return self.name
+
+    # def get_absolute_url(self):
+    #     return reverse('farm-detail', kwargs={'pk': self.pk})
+
+class FarmDiscussionBoard(DiscussionBoard):
+    farm = models.OneToOneField(Farm, on_delete=models.CASCADE)
 
 class FarmFollowers(models.Model):
     farm = models.OneToOneField(Farm, on_delete=models.CASCADE)
@@ -45,13 +44,6 @@ class FarmFollowers(models.Model):
 
     def __str__(self):
         return f'{self.farm.name} FarmFollowers'
-
-class FarmProfilePicture(models.Model):
-    farm = models.OneToOneField(Farm, on_delete=models.CASCADE)
-    image = models.ImageField(default='default.jpg', upload_to='farm_profile_pics')
-
-    def __str__(self):
-        return f'{self.farm.name} FarmProfilePicture'
 
 class FarmReview(models.Model):
     farm = models.ForeignKey(Farm, related_name='farm_review', on_delete=models.CASCADE)
@@ -78,7 +70,7 @@ class Subscription(models.Model):
                             on_delete=models.CASCADE
                             )
     def __unicode__(self):
-    	return self.name
+        return self.name
 
     def __str__(self):
         return self.name
@@ -102,6 +94,7 @@ class FarmPicture(models.Model):
                             )
     image = models.ImageField(default='default.jpg', upload_to='farm_media')
     description = models.TextField(null=True,blank=True)
+    profilePicture = models.BooleanField(default=False)
 
     def __str__(self):
         return f'{self.farm.name} FarmPicture'
