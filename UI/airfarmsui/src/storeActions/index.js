@@ -18,3 +18,10 @@ export const  userLocationAction = (payload) => {
         payload: payload
     }
 }
+
+export const  farmAction = (payload) => {
+    return {
+        type: 'FARM',
+        payload: payload
+    }
+}
