@@ -1,7 +1,7 @@
 import React from 'react'
 import NavBar from '../components/NavBar'
 
-import NewFarm from '../forms/NewFarm'
+import MapNewFarm from '../forms/MapNewFarm'
 
 function CreateFarm() {
     
@@ -9,7 +9,7 @@ function CreateFarm() {
     return (
         <>
             <NavBar/>
-            <NewFarm/>
+            <MapNewFarm/>
         </>
     )
 }

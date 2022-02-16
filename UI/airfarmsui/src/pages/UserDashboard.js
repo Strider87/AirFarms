@@ -20,7 +20,6 @@ function UserDashboard() {
             gap={4}
             >
                 <GridItem rowSpan={2} colSpan={1} bg="tomato"></GridItem>
-                <GridItem colSpan={3} ><DiscussionBoard discussion_id={1} /></GridItem>
             </Grid>
         </>
     )

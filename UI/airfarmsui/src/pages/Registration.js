@@ -5,9 +5,9 @@ import {
     Box, 
     Flex, 
     Heading,
-    Text,
-    Link
+    Text
 } from '@chakra-ui/react'
+import {Link} from 'react-router-dom'
 
 function Registration() {
     return (
