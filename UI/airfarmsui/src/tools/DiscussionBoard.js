@@ -18,7 +18,6 @@ import CustomRichTextEditor from '../components/CustomRichTextEditor'
 import parse from "html-react-parser"
 
 function DiscussionBoard(props) {
-
     let initialPosts = []
     const [createdPosts, SetCreatedPosts] = useState(initialPosts)
     const [editorState, setEditorState] = useState(EditorState.createEmpty())
