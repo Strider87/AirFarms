@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'dashboard.apps.DashboardConfig',
     'mapfarm.apps.MapfarmConfig',
+    'todo.apps.TodoConfig',
+    'project.apps.ProjectConfig',
     'djmoney',
     'farms.apps.FarmsConfig',
     'django.contrib.admin',
@@ -48,9 +50,11 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.gis',
     'rest_framework',
+    'rest_framework_gis',
     'knox',
     #'rest_framework.authtoken',
     'corsheaders',
+    'django_filters',
     #'allauth',
     'allauth.account',
     #'rest_auth.registration',
@@ -64,12 +68,12 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
  
@@ -78,6 +82,12 @@ CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
     'http://127.0.0.1:3000',
 ]
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_WHITELIST = ['http://locathost:3000', 'http://127.0.0.1:3000']
+CORS_ORIGIN_REGEX_WHITELIST = ['http://locathost:3000', 'http://127.0.0.1:3000']
+ALLOWED_HOSTS = ['*']
+
+TIME_ZONE = 'Asia/Kolkata'
 
 #CSRF_COOKIE_SECURE = True
 #SESSION_COOKIE_SECURE = True

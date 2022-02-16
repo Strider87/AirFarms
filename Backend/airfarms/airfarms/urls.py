@@ -22,9 +22,12 @@ import debug_toolbar
 urlpatterns = [
     path('', include('home.urls', namespace='home')),
     path('activity/', include('dashboard.urls')),
+    path('perform/', include('todo.urls')),
     path('accounts/', include('accounts.urls', namespace='accounts')),
-    path('deals/', include('farms.urls')),
+    path('farm/', include('farms.urls')),
     path('farm-maps/', include('mapfarm.urls')),
+    path('projects/', include('project.urls')),
+    path('todos/', include('todo.urls')),
     path('admin/', admin.site.urls),
     path('accounts/default/', include('allauth.account.urls')),
     path('accounts/social/', include('allauth.socialaccount.providers.google.urls')),
