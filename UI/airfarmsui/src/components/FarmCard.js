@@ -8,6 +8,7 @@ import {
     Image,
     useColorModeValue
 } from '@chakra-ui/react'
+import {Link} from 'react-router-dom'
 
 function FarmCard(props) {
     const locale = 'en';
@@ -24,7 +25,10 @@ function FarmCard(props) {
     //const dateString = new Intl.DateTimeFormat('en-US', {year: 'numeric', month: '2-digit',day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit'}).format(date)
     return (
         
-            <>
+            <Link to={{
+                pathname: "/load-farm",
+                state: { farmId: props.farmBody.farm.id },
+              }}>
                 <Box
                 maxW={'270px'}
                 w={'full'}
@@ -34,8 +38,7 @@ function FarmCard(props) {
                 overflow={'hidden'}
                 borderWidth='1px'>
                     <VStack>
-                        <Text noOfLines={1}>{props.farmBody.farm.description}</Text> 
-                        <br/> 
+                        <Text noOfLines={1}>{props.farmBody.farm.description}</Text>  
                         <Image 
                         h={'120px'}
                         w={'full'}
@@ -43,7 +46,7 @@ function FarmCard(props) {
                         objectFit={'cover'} />
                     </VStack>
                 </Box>                                 
-            </>
+            </Link>
 
     )
 }

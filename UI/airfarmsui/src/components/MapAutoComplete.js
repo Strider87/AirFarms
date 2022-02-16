@@ -73,7 +73,6 @@ function MapAutoComplete(props) {
                     <FormikControl
                         control='chakraInput'
                         type='search'
-                        label='Search location'
                         name='address'
                         color="orange.400"
                         placeholder="Enter a location"

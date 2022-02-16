@@ -22,7 +22,7 @@ function FarmList(props) {
 
         let config = {
         headers: {
-            'Content-Type': 'application/json'
+            'Accept': 'application/json'
         }
         }
         const authProvider = AuthProvider()

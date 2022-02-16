@@ -1,5 +1,5 @@
-import React from 'react'
-import {useSelector} from 'react-redux'
+import React from 'react';
+import NewTask from '../forms/NewTask';
 import {
     VStack,
     Box,
@@ -14,25 +14,10 @@ import {
     PopoverCloseButton,
 } from '@chakra-ui/react'
 import { AddIcon } from '@chakra-ui/icons'
-import NewFarm from '../forms/NewFarm'
 
-function CreateFarmCard(props) {
-    const locale = 'en';
-    const user = useSelector(state => state.getUser)
-    // const date = new Date(props.postBody.date_posted)
-    // //const [dateString, timeString, wish] = useDate(date)
-    // const day = date.toLocaleDateString(locale, { weekday: 'long' });
-    // const dateString = `${day}, ${date.getDate()} ${date.toLocaleDateString(locale, { month: 'long' })}\n\n`;
-  
-    // const hour = date.getHours();
-    // const wish = `Good ${(hour < 12 && 'Morning') || (hour < 17 && 'Afternoon') || 'Evening'}, `;
-  
-    // const time = date.toLocaleTimeString(locale, { hour: 'numeric', hour12: true, minute: 'numeric' });
-    //const dateString = new Intl.DateTimeFormat('en-US', {year: 'numeric', month: '2-digit',day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit'}).format(date)
+function CreateTaskCard(props) {
     return (
-        
-            // <Link to="/create-farm">
-                <Box
+        <Box
                 maxW={'270px'}
                 w={'full'}
                 bg={useColorModeValue('white', 'gray.800')}
@@ -56,20 +41,18 @@ function CreateFarmCard(props) {
                         <Portal>
                             <PopoverContent>
                             <PopoverArrow />
-                            <PopoverHeader>Header</PopoverHeader>
+                            <PopoverHeader>Add a task</PopoverHeader>
                             <PopoverCloseButton />
                             <PopoverBody>
-                                <NewFarm/>
+                                <NewTask todoID={props.todo}/>
                             </PopoverBody>
                             </PopoverContent>
                         </Portal>
                         </Popover>
                         
                     </VStack>
-                </Box>                                 
-            // </Link>
-
+                </Box> 
     )
 }
 
-export default CreateFarmCard
+export default CreateTaskCard;

@@ -12,7 +12,7 @@ import { Field } from 'formik'
 
 
 function ChakraDatePicker(props) {
-    const {label, name, required, color, ...rest} = props
+    const {label, name, required, color, dateFormat, ...rest} = props
     const isLight = useColorMode().colorMode==='light';//you can check what theme you are using right now however you want
     return (
         <Field name={name}>
@@ -28,7 +28,7 @@ function ChakraDatePicker(props) {
                                 {...field}
                                 {...rest}
                                 selected={(value && new Date(value)) || null}
-                                dateFormat="PP"
+                                dateFormat={dateFormat !== undefined ? dateFormat: "PP"}
                                 onChange={val => setFieldValue(name, val)}
                                 className="react-datapicker__input-text"
                                 showPopperArrow={true}

@@ -6,7 +6,7 @@ import {Link} from 'react-router-dom'
 const MenuItems = ({ children, isLast, to = "/", ...rest }) => {
     return (      
         <Link to={to}>
-            <Button{...rest} variant="ghost">
+            <Button {...rest} variant="ghost">
               {children}
             </Button>
         </Link>

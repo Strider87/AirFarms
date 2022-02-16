@@ -8,6 +8,7 @@ import {
     MenuList,
     MenuItem,
   } from "@chakra-ui/react"
+  import {Link} from 'react-router-dom'
 
 function NavMenu(props) {
 
@@ -24,8 +25,8 @@ function NavMenu(props) {
                     variant="outline"
                 />
                 <MenuList>
-                    <MenuItem><MenuItems ml={2} color="orange.400" to="/profile">Profile</MenuItems></MenuItem>
-                    <MenuItem><MenuItems ml={2} color="orange.400" to="/logout">Logout</MenuItems></MenuItem>
+                    <MenuItem matchWidth={true} color="orange.400"><Link to="/profile">Profile</Link></MenuItem>
+                    <MenuItem matchWidth={true} color="orange.400"><Link to="/logout">Logout</Link></MenuItem>
                 </MenuList>
             </Menu>           
         )

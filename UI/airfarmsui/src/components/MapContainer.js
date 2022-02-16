@@ -3,9 +3,11 @@ import GoogleMapReact from 'google-map-react';
 import {useSelector, connect } from 'react-redux'
 import MapAutoComplete from './MapAutoComplete'
 import {AuthProvider} from '../utils/AuthProvider'
+import { useHistory } from "react-router-dom";
 import { useDispatch } from 'react-redux';
 import { userLocationAction} from '../storeActions';
-import { Button, VStack, HStack } from '@chakra-ui/react'; 
+import { IconButton, VStack, HStack } from '@chakra-ui/react'; 
+import {PlusSquareIcon, RepeatIcon} from '@chakra-ui/icons'
 
 const AnyReactComponent = ({ text }) => <div>{text}</div>;
 
@@ -13,13 +15,16 @@ function MapContainer(props) {
 
     const dispatch = useDispatch()
     const user = useSelector(state => state.getUser)
+    const farm = useSelector(state => state.getFarm)
+    const history = useHistory()
 
     const [selectedShape, setSelectedShape] = useState()
     const [mapApiLoaded, setMapApiLoaded] = useState(false)
     const [mapInstance, setMapInstance] = useState()
     const [mapApi, setMapApi] = useState()
     const [geoCoder, setGeoCoder] = useState()
-    //const [address, setAddress] = useState()
+    const [drawManager, setDrawManager] = useState()
+    const [feature, setFeature] = useState()
 
     const apiHasLoaded = (map, maps) => {
         setMapApiLoaded(true)
@@ -48,6 +53,22 @@ function MapContainer(props) {
         zoom: 18
     };
 
+    function resetPoly(){
+        deleteSelectedShape();
+    }
+
+    function deleteSelectedShape() {
+        if (selectedShape) {
+            selectedShape.setMap(null);
+            mapInstance.data.remove(feature);
+            // To show:
+            drawManager.setOptions({
+                drawingControl: true,
+                drawingMode: mapApi.drawing.OverlayType.POLYGON
+            });
+        }
+    }
+
     function clearSelection() {
         if (selectedShape) {
           selectedShape.setEditable(false);
@@ -65,7 +86,7 @@ function MapContainer(props) {
         mapInstance.data.toGeoJson(function(obj){
 
             const requestData = {
-                farm: 6,
+                farm: farm.id,
                 body: JSON.stringify(obj)
             }
 
@@ -78,7 +99,8 @@ function MapContainer(props) {
             authProvider.authPost(`http://127.0.0.1:8000/farm-maps/mapfarm/handle/`, requestData, config, false)
             .then(res =>{
                 console.log(res);
-                console.log(res.data);            
+                console.log(res.data);
+                history.push('/profile')            
             })
             .catch(error => {
                 console.log(error);
@@ -105,6 +127,8 @@ function MapContainer(props) {
           });
           drawingManager.setMap(map);
 
+          setDrawManager(drawingManager)
+
           map.data.setStyle({
             fillColor: '#556B2F',
             strokeOpacity: 1.0,
@@ -121,9 +145,10 @@ function MapContainer(props) {
                                 strokeWeight: 3,
                                 editable: true,
                               });
-                let feature = map.data.add(new maps.Data.Feature({
+                setFeature( map.data.add(new maps.Data.Feature({
                   geometry: new maps.Data.Polygon([event.overlay.getPath().getArray()])
-                }));
+                }))
+                );
                 
                 // Disable drawing option
                 drawingManager.setOptions({
@@ -151,12 +176,10 @@ function MapContainer(props) {
     return (
         <VStack style={{ height: '100%', width: '100%' }}>
             <HStack>
-                {mapApiLoaded && (
-                        <div>
-                            <MapAutoComplete map={mapInstance} mapApi={mapApi} geoCoder={geoCoder} addPlace={addPlace} />
-                        </div>
-                )}
-                <Button onClick={savePolygon}>Save</Button>
+                {mapApiLoaded ? <MapAutoComplete map={mapInstance} mapApi={mapApi} geoCoder={geoCoder} addPlace={addPlace} /> : <div/>
+                }
+                <IconButton onClick={savePolygon} icon={<PlusSquareIcon boxSize='70%'/>}/>
+                <IconButton onClick={resetPoly} icon={<RepeatIcon boxSize='70%'/>}/>
             </HStack>
             <br/>            
             <GoogleMapReact

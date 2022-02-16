@@ -15,20 +15,9 @@ import {
 } from '@chakra-ui/react'
 import { AddIcon } from '@chakra-ui/icons'
 import NewFarm from '../forms/NewFarm'
+import Project from '../forms/Project'
 
-function CreateFarmCard(props) {
-    const locale = 'en';
-    const user = useSelector(state => state.getUser)
-    // const date = new Date(props.postBody.date_posted)
-    // //const [dateString, timeString, wish] = useDate(date)
-    // const day = date.toLocaleDateString(locale, { weekday: 'long' });
-    // const dateString = `${day}, ${date.getDate()} ${date.toLocaleDateString(locale, { month: 'long' })}\n\n`;
-  
-    // const hour = date.getHours();
-    // const wish = `Good ${(hour < 12 && 'Morning') || (hour < 17 && 'Afternoon') || 'Evening'}, `;
-  
-    // const time = date.toLocaleTimeString(locale, { hour: 'numeric', hour12: true, minute: 'numeric' });
-    //const dateString = new Intl.DateTimeFormat('en-US', {year: 'numeric', month: '2-digit',day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit'}).format(date)
+function CreateProjectCard(props) {
     return (
         
             // <Link to="/create-farm">
@@ -59,7 +48,7 @@ function CreateFarmCard(props) {
                             <PopoverHeader>Header</PopoverHeader>
                             <PopoverCloseButton />
                             <PopoverBody>
-                                <NewFarm/>
+                                <Project farm_id={props.farm_id}/>
                             </PopoverBody>
                             </PopoverContent>
                         </Portal>
@@ -72,4 +61,4 @@ function CreateFarmCard(props) {
     )
 }
 
-export default CreateFarmCard
+export default CreateProjectCard

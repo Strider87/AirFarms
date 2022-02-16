@@ -14,7 +14,7 @@ function ChakraInput(props) {
             {({field, form}) => {
                 return (
                     <FormControl isRequired={required} isInvalid={form.errors[name] && form.touched[name]}>
-                        <FormLabel htmlFor={name} color={color}>{label}</FormLabel>
+                        {label ? <FormLabel htmlFor={name} color={color}>{label}</FormLabel> : <div/>}
                         <Input id={name}{...rest}{...field}
                         ref={(ref) => {
                             if(setRef !== undefined && ref !== null){
