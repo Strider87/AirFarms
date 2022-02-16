@@ -3,6 +3,7 @@ from rest_framework import permissions, viewsets
 
 from todo.models import Task, Todo
 from todo.serializers import TaskSerializer, TodoSerializer
+from django_filters.rest_framework import DjangoFilterBackend
 
 # Create your views here.
 
@@ -19,6 +20,8 @@ class TaskViewSet(viewsets.ModelViewSet, TaskWritePermission):
     ]
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
+    filter_backends = [DjangoFilterBackend,]
+    filterset_fields = ['todoItem']
 
 class TodoViewSet(viewsets.ModelViewSet):
     permission_classes = [
@@ -26,3 +29,5 @@ class TodoViewSet(viewsets.ModelViewSet):
     ]
     queryset = Todo.objects.all()
     serializer_class = TodoSerializer
+    filter_backends = [DjangoFilterBackend,]
+    filterset_fields = ['project']

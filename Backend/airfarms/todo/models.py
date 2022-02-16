@@ -14,6 +14,6 @@ class Todo(models.Model):
 class Task(DiscussionBoard):
     completion_date = DateField(default=timezone.now)
     notes = TextField(blank=True)
-    assignedTo = ManyToManyField(User, related_name="assignee")
-    notifiers = ManyToManyField(User)
+    assignee = ManyToManyField(User)
+    notifiers = ManyToManyField(User, blank=True, related_name='noticer')
     todoItem = ForeignKey(Todo, on_delete=models.CASCADE)
