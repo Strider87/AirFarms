@@ -1,6 +1,6 @@
 from django.db.models.query import QuerySet
 from rest_framework import serializers
-from .models import CommentPicture, Post, Comments
+from .models import CommentPicture, DiscussionBoard, Post, Comments, PostPicture
 from accounts.models import User
 
 class CreatePostSerializer(serializers.ModelSerializer):
@@ -11,10 +11,10 @@ class CreatePostSerializer(serializers.ModelSerializer):
         model = Post
         fields = (
             'description',
-            #'pic',
             'date_posted',
             'tags',
-            'user'
+            'user',
+            'discussion'
         )
         extra_kwargs = {'date_posted': {'write_only': True}}
 
@@ -28,10 +28,10 @@ class CreatePostSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         post = Post(
             description = validated_data['description'],
-            #pic = validated_data['pic'],
             date_posted = validated_data['date_posted'],
             tags = validated_data['tags'],
             user = self.fields['user'].queryset.get(),
+            discussion = validated_data['discussion']
         )
         post.save()
         return post
@@ -73,13 +73,45 @@ class PostSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField()    
     class Meta:
         model = Post
-        fields = ('id', 'description', 'pic', 'date_posted', 'tags')
+        fields = ('description', 'date_posted', 'tags', 'discussion', 'id')
 
     def validate(self, data):
         post = Post.objects.get(id=int(data['id']))
         if post:
             return post
         raise serializers.ValidationError("Invalid Details.")
+
+class PostListSerializer(serializers.ModelSerializer):
+    user = serializers.SerializerMethodField()
+    discussion = serializers.SerializerMethodField()    
+    class Meta:
+        model = Comments
+        fields = ('user', 'discussion')
+
+    def __init__(self, *args, **kwargs):
+        post_user = kwargs.pop('user')
+        discussion = kwargs.pop('discussion')
+        super().__init__(*args, **kwargs)
+        #super(CreatePostSerializer, self).__init__(*args, **kwargs)
+        if post_user:
+            self.fields['user'].queryset = User.objects.filter(id=post_user.id)
+            self.fields['discussion'].queryset = DiscussionBoard.objects.filter(id=discussion.id)
+    
+    def validate(self, data):
+        posts = Post.objects.filter(discussion=self.fields['discussion'].queryset.get())
+        if posts:
+            return posts
+        raise serializers.ValidationError("Invalid Details.")
+
+class PostPictureSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PostPicture
+        fields = ('post', 'pic', 'id')
+
+class DiscussionBoardSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DiscussionBoard
+        fields = ('id', 'title')
 
 class CreateCommentSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField()

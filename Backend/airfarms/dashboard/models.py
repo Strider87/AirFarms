@@ -1,6 +1,5 @@
 from django.db import models
 from accounts.models import User
-from farms.models import Farm, Subscription
 from django.urls import reverse
 from django.utils import timezone
 
