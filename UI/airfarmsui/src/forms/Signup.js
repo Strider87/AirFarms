@@ -25,6 +25,8 @@ function Signup() {
     }
 
     const onSubmit = (values, onSubmitProps) => {
+        let date = new Date(values.birthDate)
+        let dateSting = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
         //Call register API
         const user = {
             username: values.email,
@@ -34,7 +36,7 @@ function Signup() {
             email: values.email,
             about: values.about,
             location: values.location,
-            birth_date: values.birthDate,
+            birth_date: dateSting,
             password: values.password
           };
 
